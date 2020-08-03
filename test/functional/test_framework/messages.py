@@ -29,6 +29,8 @@ import time
 
 from test_framework.siphash import siphash256
 from test_framework.util import hex_str_to_bytes, assert_equal
+from test_framework.heavyhash_imp import default_matrix, getPoWHash
+from test_framework.xoshiro256pp import generate_heavyhash_matrix, get_uint64, rol64, xoshiro256pp_seeding, xoshiro256pp
 
 MIN_VERSION_SUPPORTED = 60001
 MY_VERSION = 70014  # past bip-31 for ping/pong
@@ -526,7 +528,7 @@ class CTransaction:
 
 class CBlockHeader:
     __slots__ = ("hash", "hashMerkleRoot", "hashPrevBlock", "nBits", "nNonce",
-                 "nTime", "nVersion", "sha256")
+                 "nTime", "nVersion", "sha256", "heavyhash", "s", "matrix")
 
     def __init__(self, header=None):
         if header is None:
@@ -539,10 +541,14 @@ class CBlockHeader:
             self.nBits = header.nBits
             self.nNonce = header.nNonce
             self.sha256 = header.sha256
+            self.heavyhash = header.heavyhash
             self.hash = header.hash
             self.calc_sha256()
+            s = xoshiro256pp_seeding(self.hashPrevBlock)
+            self.matrix = generate_heavyhash_matrix(s)
 
     def set_null(self):
+        global default_matrix
         self.nVersion = 1
         self.hashPrevBlock = 0
         self.hashMerkleRoot = 0
@@ -551,6 +557,8 @@ class CBlockHeader:
         self.nNonce = 0
         self.sha256 = None
         self.hash = None
+        self.heavyhash = None
+        self.matrix = default_matrix
 
     def deserialize(self, f):
         self.nVersion = struct.unpack("<i", f.read(4))[0]
@@ -561,6 +569,7 @@ class CBlockHeader:
         self.nNonce = struct.unpack("<I", f.read(4))[0]
         self.sha256 = None
         self.hash = None
+        self.heavyhash = None
 
     def serialize(self):
         r = b""
@@ -581,13 +590,28 @@ class CBlockHeader:
             r += struct.pack("<I", self.nTime)
             r += struct.pack("<I", self.nBits)
             r += struct.pack("<I", self.nNonce)
+            print(hash256(r))
             self.sha256 = uint256_from_str(hash256(r))
+            print(self.sha256)
             self.hash = encode(hash256(r)[::-1], 'hex_codec').decode('ascii')
+            print(self.hash)
+
+
+    def calc_pow_hash(self):
+        if self.heavyhash is None:
+            r = b""
+            r += struct.pack("<i", self.nVersion)
+            r += ser_uint256(self.hashPrevBlock)
+            r += ser_uint256(self.hashMerkleRoot)
+            r += struct.pack("<I", self.nTime)
+            r += struct.pack("<I", self.nBits)
+            r += struct.pack("<I", self.nNonce)
+            self.heavyhash = uint256_from_str(getPoWHash(self.matrix, r))
 
     def rehash(self):
-        self.sha256 = None
-        self.calc_sha256()
-        return self.sha256
+        self.heavyhash = None
+        self.calc_pow_hash()
+        return self.heavyhash
 
     def __repr__(self):
         return "CBlockHeader(nVersion=%i hashPrevBlock=%064x hashMerkleRoot=%064x nTime=%s nBits=%08x nNonce=%08x)" \
@@ -661,7 +685,7 @@ class CBlock(CBlockHeader):
     def solve(self):
         self.rehash()
         target = uint256_from_compact(self.nBits)
-        while self.sha256 > target:
+        while self.heavyhash > target:
             self.nNonce += 1
             self.rehash()
 

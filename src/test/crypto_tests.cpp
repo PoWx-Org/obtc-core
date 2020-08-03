@@ -13,13 +13,17 @@
 #include <crypto/sha1.h>
 #include <crypto/sha256.h>
 #include <crypto/sha512.h>
+#include <crypto/heavyhash.h>
+#include <crypto/heavyhash_dummyArray.h>
+#include <crypto/xoshiro256pp.h>
+#include <hash.h>
 #include <random.h>
 #include <util/strencodings.h>
 #include <test/util/setup_common.h>
-
 #include <vector>
 
 #include <boost/test/unit_test.hpp>
+#include <matrix-utils/singular/Matrix.h>
 
 BOOST_FIXTURE_TEST_SUITE(crypto_tests, BasicTestingSetup)
 
@@ -51,6 +55,35 @@ static void TestVector(const Hasher &h, const In &in, const Out &out) {
         BOOST_CHECK(hash == out);
     }
 }
+
+bool CheckIfCorrectlyConverted(uint64_t matrix[64*64]) {
+    for (int i = 0; i < 64; ++i) {
+        for (int j = 0; j < 64; ++j) {
+            if (matrix[ i*64 + j ] != reference_matrix[i][j]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+static void GenerateReferenceCheckMatrixSingular(uint64_t matrix[64*64]){
+    for (int i = 0; i < 64; ++i) {
+        for (int j = 0; j < 64; ++j) {
+            matrix[ i*64 + j ] = reference_matrix[i][j];
+        }
+    }
+    assert(CheckIfCorrectlyConverted(matrix));
+};
+
+static void TestSHA3_256(const std::string &in, const std::string &out){TestVector(CSHA3_256(), in, ParseHex(out));};
+
+static void TestHeavyHashSingular(const std::string &in, const std::string &out) {
+    uint64_t matrix[64*64];
+    GenerateReferenceCheckMatrixSingular(matrix);
+    CHeavyHash ctx(matrix);
+    TestVector(ctx, in, ParseHex(out));
+};
 
 static void TestSHA1(const std::string &in, const std::string &hexout) { TestVector(CSHA1(), in, ParseHex(hexout));}
 static void TestSHA256(const std::string &in, const std::string &hexout) { TestVector(CSHA256(), in, ParseHex(hexout));}
@@ -200,6 +233,15 @@ static std::string LongTestString()
 }
 
 const std::string test1 = LongTestString();
+
+// Testing examples for CSHA3_256
+BOOST_AUTO_TEST_CASE(sha3_testvectors){
+    TestSHA3_256("", "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a");
+}
+
+BOOST_AUTO_TEST_CASE(heavyhash_testvectors_singular_matrix){
+        TestHeavyHashSingular("\xC1\xEC\xFD\xFC", "39387f2e64e7c08d3ce0da8c491b4fcf2c862798dedb4690d819de7926aa4ecb");
+}
 
 BOOST_AUTO_TEST_CASE(ripemd160_testvectors) {
     TestRIPEMD160("", "9c1185a5c5e9fc54612808977ee8f548b2258d31");

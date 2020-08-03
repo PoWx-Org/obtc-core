@@ -4,13 +4,21 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <primitives/block.h>
-
 #include <hash.h>
 #include <tinyformat.h>
 
 uint256 CBlockHeader::GetHash() const
 {
-    return SerializeHash(*this);
+    return GetPoWHash();
+}
+
+uint256 CBlockHeader::GetPoWHash() const
+{
+    uint256 seed;
+    CSHA3_256().Write(hashPrevBlock.begin(), 32).Finalize(seed.begin());
+    uint64_t matrix[64*64];
+    GenerateHeavyHashMatrix(seed, matrix);
+    return SerializeHeavyHash(*this, matrix);
 }
 
 std::string CBlock::ToString() const

@@ -245,7 +245,8 @@ BITCOIN_TESTS =\
   test/validation_block_tests.cpp \
   test/validation_flush_tests.cpp \
   test/validationinterface_tests.cpp \
-  test/versionbits_tests.cpp
+  test/versionbits_tests.cpp \
+  test/singular_tests.cpp
 
 if ENABLE_WALLET
 BITCOIN_TESTS += \

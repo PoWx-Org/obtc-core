@@ -24,6 +24,9 @@
 #include <QRadialGradient>
 #include <QScreen>
 
+#define POWX_COPYRIGHT_YEAR 2021
+#define POWX_COPYRIGHT_HOLDERS(untilYear) (strprintf("2020-%u PoWx", untilYear))
+
 
 SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(nullptr, f), curAlignment(0), m_node(node)
@@ -41,7 +44,9 @@ SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const Netw
     // define text to place
     QString titleText       = PACKAGE_NAME;
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2009, COPYRIGHT_YEAR)).c_str());
+    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2009, COPYRIGHT_YEAR)).c_str()) +
+	    QString::fromUtf8(", ") +
+	    QString::fromUtf8(POWX_COPYRIGHT_HOLDERS(POWX_COPYRIGHT_YEAR).c_str());
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();

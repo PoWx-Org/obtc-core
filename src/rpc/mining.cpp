@@ -123,7 +123,7 @@ static UniValue generateBlocks(const CTxMemPool& mempool, const CScript& coinbas
             LOCK(cs_main);
             IncrementExtraNonce(pblock, ::ChainActive().Tip(), nExtraNonce);
         }
-        while (nMaxTries > 0 && pblock->nNonce < std::numeric_limits<uint32_t>::max() && !CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus()) && !ShutdownRequested()) {
+        while (nMaxTries > 0 && pblock->nNonce < std::numeric_limits<uint32_t>::max() && !CheckProofOfWork(pblock->GetPoWHash(), pblock->nBits, Params().GetConsensus()) && !ShutdownRequested()) {
             ++pblock->nNonce;
             --nMaxTries;
         }
@@ -137,7 +137,7 @@ static UniValue generateBlocks(const CTxMemPool& mempool, const CScript& coinbas
         if (!ProcessNewBlock(Params(), shared_pblock, true, nullptr))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
         ++nHeight;
-        blockHashes.push_back(pblock->GetHash().GetHex());
+        blockHashes.push_back(pblock->GetPoWHash().GetHex());
     }
     return blockHashes;
 }
@@ -448,7 +448,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
             if (!DecodeHexBlk(block, dataval.get_str()))
                 throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
 
-            uint256 hash = block.GetHash();
+            uint256 hash = block.GetPoWHash();
             const CBlockIndex* pindex = LookupBlockIndex(hash);
             if (pindex) {
                 if (pindex->IsValid(BLOCK_VALID_SCRIPTS))
@@ -737,7 +737,7 @@ public:
 
 protected:
     void BlockChecked(const CBlock& block, const BlockValidationState& stateIn) override {
-        if (block.GetHash() != hash)
+        if (block.GetPoWHash() != hash)
             return;
         found = true;
         state = stateIn;
@@ -771,7 +771,7 @@ static UniValue submitblock(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block does not start with a coinbase");
     }
 
-    uint256 hash = block.GetHash();
+    uint256 hash = block.GetPoWHash();
     {
         LOCK(cs_main);
         const CBlockIndex* pindex = LookupBlockIndex(hash);
@@ -794,7 +794,7 @@ static UniValue submitblock(const JSONRPCRequest& request)
     }
 
     bool new_block;
-    auto sc = std::make_shared<submitblock_StateCatcher>(block.GetHash());
+    auto sc = std::make_shared<submitblock_StateCatcher>(block.GetPoWHash());
     RegisterSharedValidationInterface(sc);
     bool accepted = ProcessNewBlock(Params(), blockptr, /* fForceProcessing */ true, /* fNewBlock */ &new_block);
     UnregisterSharedValidationInterface(sc);

@@ -1,10 +1,10 @@
-Contributing to Bitcoin Core
+Contributing to oBTC Core
 ============================
 
-The Bitcoin Core project operates an open contributor model where anyone is
-welcome to contribute towards development in the form of peer review, testing
-and patches. This document explains the practical process and guidelines for
-contributing.
+The oBTC Core is based on the Bitcoin Core. The project operates an open
+contributor model where anyone is welcome to contribute towards development in
+the form of peer review, testing and patches. This document explains the
+practical process and guidelines for contributing.
 
 Firstly in terms of structure, there is no particular concept of "Core
 developers" in the sense of privileged people. Open source often naturally
@@ -14,27 +14,11 @@ purposes. As such there are repository "maintainers" who are responsible for
 merging pull requests as well as a "lead maintainer" who is responsible for the
 release cycle, overall merging, moderation and appointment of maintainers.
 
-If you're looking for somewhere to start contributing, check out the
-[good first issue](https://github.com/bitcoin/bitcoin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
-list or participate in a weekly [Bitcoin Core PR Review Club](https://bitcoincore.reviews/) meeting.
 
 Communication Channels
 ----------------------
 
-Most communication about Bitcoin Core development happens on IRC, in the
-#bitcoin-core-dev channel on Freenode. The easiest way to participate on IRC is
-with the web client, [webchat.freenode.net](https://webchat.freenode.net/). Chat
-history logs can be found
-on [http://www.erisian.com.au/bitcoin-core-dev/](http://www.erisian.com.au/bitcoin-core-dev/)
-and [http://gnusha.org/bitcoin-core-dev/](http://gnusha.org/bitcoin-core-dev/).
-
-Discussion about code base improvements happens in GitHub issues and on pull
-requests.
-
-The developer
-[mailing list](https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev)
-should be used to discuss complicated or controversial changes before working on
-a patch set.
+First and foremost we rely on Github issues for communication.
 
 
 Contributor Workflow
@@ -208,11 +192,7 @@ workload on reviewing.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the Bitcoin Core project (and related
-projects such as libsecp256k1), and is not to be confused with overall Bitcoin
-Network Protocol consensus changes.
-
-Whether a pull request is merged into Bitcoin Core rests with the project merge
+Whether a pull request is merged into oBTC Core rests with the project merge
 maintainers and ultimately the project lead.
 
 Maintainers will take into consideration if a patch is in line with the general
@@ -231,7 +211,7 @@ In general, all pull requests must:
     demonstrating the bug and also proving the fix. This helps prevent regression.
   - Change relevant comments and documentation when behaviour of code changes.
 
-Patches that change Bitcoin consensus rules are considerably more involved than
+Patches that change oBTC consensus rules are considerably more involved than
 normal because they affect the entire ecosystem and so must be preceded by
 extensive mailing list discussions and have a numbered BIP. While each case will
 be different, one should be prepared to expend more time and effort than for
@@ -286,7 +266,7 @@ higher in terms of discussion and peer review requirements, keeping in mind that
 mistakes could be very costly to the wider community. This includes refactoring
 of consensus critical code.
 
-Where a patch set proposes to change the Bitcoin consensus, it must have been
+Where a patch set proposes to change the oBTC consensus, it must have been
 discussed extensively on the mailing list and IRC, be accompanied by a widely
 discussed BIP and have a generally widely perceived technical consensus of being
 a worthwhile change based on the judgement of the maintainers.
@@ -342,16 +322,10 @@ Github-Pull: #<PR number>
 Rebased-From: <commit hash of the original commit>
 ```
 
-Have a look at [an example backport PR](
-https://github.com/bitcoin/bitcoin/pull/16189).
-
-Also see the [backport.py script](
-https://github.com/bitcoin-core/bitcoin-maintainer-tools#backport).
-
 Release Policy
 --------------
 
-The project leader is the release manager for each Bitcoin Core release.
+The project leader is the release manager for each oBTC Core release.
 
 Copyright
 ---------
@@ -360,3 +334,9 @@ By contributing to this repository, you agree to license your work under the
 MIT license unless specified otherwise in `contrib/debian/copyright` or at
 the top of the file itself. Any work contributed where you are not the original
 author must contain its license header with the original author(s) and source.
+
+Closing Remarks
+---------------
+
+This project would be impossible without the Bitcoin Core. We thank the Bitcoin Core
+contributors for their effort.
