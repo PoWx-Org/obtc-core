@@ -5,6 +5,8 @@
 #include <hash.h>
 #include <crypto/common.h>
 #include <crypto/hmac_sha512.h>
+#include <crypto/xoshiro256pp.h>
+#include <util/matrixchecks.h>
 
 
 inline uint32_t ROTL32(uint32_t x, int8_t r)
@@ -76,4 +78,21 @@ void BIP32Hash(const ChainCode &chainCode, unsigned int nChild, unsigned char he
     num[2] = (nChild >>  8) & 0xFF;
     num[3] = (nChild >>  0) & 0xFF;
     CHMAC_SHA512(chainCode.begin(), chainCode.size()).Write(&header, 1).Write(data, 32).Write(num, 4).Finalize(output);
+}
+
+Eigen::Matrix<int, 64, 64> GenerateHeavyHashMatrix(uint256 matrix_seed) {
+    XoShiRo256PlusPlus generator(matrix_seed);
+    Eigen::Matrix<int, 64, 64>  matrix;
+    do {
+        for (int i = 0; i < 64; ++i) {
+            for (int j = 0; j < 64; j += 16) {
+                uint64_t value = generator();
+                // fills 16 4-bit integers, lower bits first
+                for (int shift = 0; shift < 16; ++shift) {
+                    matrix(i, j + shift) = (value >> (4 * shift)) & 0xF;
+                }
+            }
+        }
+    } while (!heavyhash::checks::Is4BitPrecision(matrix) || !heavyhash::checks::IsFullRank(matrix));
+    return matrix;
 }

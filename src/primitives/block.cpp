@@ -13,6 +13,15 @@ uint256 CBlockHeader::GetHash() const
     return SerializeHash(*this);
 }
 
+uint256 CBlockHeader::GetPoWHash() const
+{
+    uint256 seed;
+    CSHA3_256().Write(hashPrevBlock.begin(), 32).Finalize(seed.begin());
+
+    auto matrix = GenerateHeavyHashMatrix(seed);
+    return SerializeHeavyHash(*this, matrix);
+}
+
 std::string CBlock::ToString() const
 {
     std::stringstream s;

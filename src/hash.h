@@ -9,12 +9,14 @@
 #include <crypto/common.h>
 #include <crypto/ripemd160.h>
 #include <crypto/sha256.h>
+#include <crypto/heavyhash.h>
 #include <prevector.h>
 #include <serialize.h>
 #include <uint256.h>
 #include <version.h>
 
 #include <vector>
+#include <Eigen/Dense>
 
 typedef uint256 ChainCode;
 
@@ -117,7 +119,7 @@ inline uint160 Hash160(const prevector<N, unsigned char>& vch)
 class CHashWriter
 {
 private:
-    CHash256 ctx;
+    CHash256   ctx;
 
     const int nType;
     const int nVersion;
@@ -150,6 +152,50 @@ public:
 
     template<typename T>
     CHashWriter& operator<<(const T& obj) {
+        // Serialize to this stream
+        ::Serialize(*this, obj);
+        return (*this);
+    }
+};
+
+/** A writer stream (for serialization) that computes a HeavyHash. */
+class CHeavyHashWriter
+{
+private:
+    CHeavyHash ctx;
+
+    const int nType;
+    const int nVersion;
+public:
+
+    CHeavyHashWriter(const Eigen::Matrix<int, 64, 64>& heavyhash_matrix,
+                     int nTypeIn, int nVersionIn) : ctx(heavyhash_matrix), nType(nTypeIn), nVersion(nVersionIn) {}
+
+    int GetType() const { return nType; }
+    int GetVersion() const { return nVersion; }
+
+    void write(const char *pch, size_t size) {
+        ctx.Write((const unsigned char*)pch, size);
+    }
+
+    // invalidates the object
+    uint256 GetHash() {
+        uint256 result;
+        ctx.Finalize((unsigned char*)&result);
+        return result;
+    }
+
+    /**
+     * Returns the first 64 bits from the resulting hash.
+     */
+    inline uint64_t GetCheapHash() {
+        unsigned char result[CHeavyHash::OUTPUT_SIZE];
+        ctx.Finalize(result);
+        return ReadLE64(result);
+    }
+
+    template<typename T>
+    CHeavyHashWriter& operator<<(const T& obj) {
         // Serialize to this stream
         ::Serialize(*this, obj);
         return (*this);
@@ -199,6 +245,21 @@ uint256 SerializeHash(const T& obj, int nType=SER_GETHASH, int nVersion=PROTOCOL
     ss << obj;
     return ss.GetHash();
 }
+
+/** Compute the 256-bit HeavyHash of an object's serialization*/
+template<typename T>
+uint256 SerializeHeavyHash(const T& obj, const Eigen::Matrix<int, 64, 64>& heavyhash_matrix,
+        const int nType=SER_GETHASH, int nVersion=PROTOCOL_VERSION)
+{
+    CHeavyHashWriter ss(heavyhash_matrix, nType, nVersion);
+    ss << obj;
+    return ss.GetHash();
+}
+
+/** Generates deterministically a full-rank pseudorandom matrix for HeavyHash using \p matrix_seed
+ * @pre matrix_seed must be non-zero
+ * */
+Eigen::Matrix<int, 64, 64> GenerateHeavyHashMatrix(uint256 matrix_seed);
 
 unsigned int MurmurHash3(unsigned int nHashSeed, const std::vector<unsigned char>& vDataToHash);
 

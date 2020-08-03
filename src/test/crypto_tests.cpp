@@ -13,10 +13,13 @@
 #include <crypto/sha1.h>
 #include <crypto/sha256.h>
 #include <crypto/sha512.h>
+#include <crypto/heavyhash.h>
+#include <crypto/heavyhash_dummyArray.h>
+#include <crypto/xoshiro256pp.h>
+#include <hash.h>
 #include <random.h>
 #include <util/strencodings.h>
 #include <test/util/setup_common.h>
-
 #include <vector>
 
 #include <boost/test/unit_test.hpp>
@@ -51,6 +54,23 @@ static void TestVector(const Hasher &h, const In &in, const Out &out) {
         BOOST_CHECK(hash == out);
     }
 }
+
+static Eigen::Matrix<int, 64, 64> GenerateReferenceCheckMatrix(){
+    Eigen::Matrix<int, 64, 64> matrix;
+    for (Eigen::Index i = 0; i < 64; ++i) {
+        for (Eigen::Index j = 0; j < 64; ++j) {
+            matrix(i, j) = reference_matrix[i][j];
+        }
+    }
+
+    return matrix;
+}
+
+static void TestSHA3_256(const std::string &in, const std::string &out){TestVector(CSHA3_256(), in, ParseHex(out));};
+static void TestHeavyHash(const std::string &in, const std::string &out) {
+    TestVector(CHeavyHash(GenerateReferenceCheckMatrix()), in, ParseHex(out));
+};
+
 
 static void TestSHA1(const std::string &in, const std::string &hexout) { TestVector(CSHA1(), in, ParseHex(hexout));}
 static void TestSHA256(const std::string &in, const std::string &hexout) { TestVector(CSHA256(), in, ParseHex(hexout));}
@@ -200,6 +220,18 @@ static std::string LongTestString()
 }
 
 const std::string test1 = LongTestString();
+
+// Testing examples for CSHA3_256
+BOOST_AUTO_TEST_CASE(sha3_testvectors){
+    TestSHA3_256("", "a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a");
+    TestSHA3_256("anton", "41057f20b4adb444941925b13f8a4030b48485c23706efba803c8fdd94996aad");
+    TestSHA3_256("i hope it works", "ff3b456afffb03d5440bf0ed1e78587ea389df00d8bf7c1b8f34aa5a958e41c4");
+    TestSHA3_256("opow is cool", "446fb10c79109415389b1497cdf8a375262cf6fad6f1281cc9474506bbd1265e");
+}
+
+BOOST_AUTO_TEST_CASE(heavyhash_testvectors){
+    TestHeavyHash("\xC1\xEC\xFD\xFC", "39387f2e64e7c08d3ce0da8c491b4fcf2c862798dedb4690d819de7926aa4ecb");
+}
 
 BOOST_AUTO_TEST_CASE(ripemd160_testvectors) {
     TestRIPEMD160("", "9c1185a5c5e9fc54612808977ee8f548b2258d31");
