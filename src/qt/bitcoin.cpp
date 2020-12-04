@@ -381,7 +381,7 @@ void BitcoinApplication::shutdownResult()
 
 void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Bitcoin can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. Optical Bitcoin can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(EXIT_FAILURE);
 }
 

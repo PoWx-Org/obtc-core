@@ -40,7 +40,7 @@ QString BitcoinUnits::longName(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("BTC");
+    case BTC: return QString("oBTC");
     case mBTC: return QString("mBTC");
     case uBTC: return QString::fromUtf8("µBTC (bits)");
     case SAT: return QString("Satoshi (sat)");
@@ -62,7 +62,7 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("Bitcoins");
+    case BTC: return QString("Optical Bitcoins");
     case mBTC: return QString("Milli-Bitcoins (1 / 1" THIN_SP_UTF8 "000)");
     case uBTC: return QString("Micro-Bitcoins (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");

@@ -262,10 +262,10 @@
 #define PACKAGE_BUGREPORT "https://github.com/bitcoin/bitcoin/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Bitcoin Core"
+#define PACKAGE_NAME "Optical Bitcoin"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Bitcoin Core 0.19.99"
+#define PACKAGE_STRING "Optical Bitcoin 0.19.99"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "bitcoin"

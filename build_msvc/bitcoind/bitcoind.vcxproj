@@ -53,7 +53,7 @@
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(ConfigIniIn)" DestinationFiles="$(ConfigIniOut)" ></Copy>
     <ReplaceInFile FilePath="$(ConfigIniOut)"
-                   Replace="@PACKAGE_NAME@" By="Bitcoin Core"></ReplaceInFile>
+                   Replace="@PACKAGE_NAME@" By="Optical Bitcoin Core"></ReplaceInFile>
     <ReplaceInFile FilePath="$(ConfigIniOut)"
                    Replace="@abs_top_srcdir@" By="..\.." ToFullPath="true"></ReplaceInFile>
     <ReplaceInFile FilePath="$(ConfigIniOut)"

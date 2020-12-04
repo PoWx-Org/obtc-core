@@ -972,7 +972,7 @@
     </message>
     <message>
         <source>Bitcoin</source>
-        <translation>Bitcoin Core</translation>
+        <translation>Optical Bitcoin Core</translation>
     </message>
     <message>
         <source>Discard blocks after verification, except most recent %1 GB (prune)</source>
