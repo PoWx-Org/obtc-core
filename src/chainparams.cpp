@@ -58,7 +58,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = CBaseChainParams::MAIN;
-        const uint256 GENESIS_HASH = uint256S("7785807d622fa83b41ab643885647f48cee119b465c2ccb21d02cd81219d8fa2");
+        const uint256 GENESIS_HASH = uint256S("0000000074b699e30b0f1c373f00e86c64f010a40c48b248179ab73dea165584");
 
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Exception = GENESIS_HASH;
@@ -138,7 +138,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
-        const uint256 GENESIS_HASH = uint256S("75dd8b3be02516edbfd7b0df472adbc333a0b0f211b592b9e46e1ac95cefff39");
+        const uint256 GENESIS_HASH = uint256S("6dae6b9e2c3cd68226ab549594a34c0a20432d9589a06fa4ee7d73c30ef3af3c");
         
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Exception = GENESIS_HASH;
@@ -254,7 +254,7 @@ public:
 
         genesis = CreateGenesisBlock(1596724987, 0, 0x207fffff, 536870912, 50 * COIN); // 536870912 = BIP101
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("317fc0111c040ad152076cc23c77729d39b66d2d77e2f6114aa72170273e685d"));
+        assert(consensus.hashGenesisBlock == uint256S("15ac4c9a85e696fd2f8f104632ed3123a5ea597aff33540fd189d09e1def23ee"));
         assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
