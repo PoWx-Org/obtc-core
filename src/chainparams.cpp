@@ -60,7 +60,7 @@ public:
         strNetworkID = CBaseChainParams::MAIN;
         const uint256 GENESIS_HASH = uint256S("7785807d622fa83b41ab643885647f48cee119b465c2ccb21d02cd81219d8fa2");
 
-        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = GENESIS_HASH;
@@ -102,7 +102,7 @@ public:
 
         genesis = CreateGenesisBlock(1598360116, 142074830, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-	
+
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
         assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
 
@@ -139,8 +139,8 @@ public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
         const uint256 GENESIS_HASH = uint256S("75dd8b3be02516edbfd7b0df472adbc333a0b0f211b592b9e46e1ac95cefff39");
-        
-        consensus.nSubsidyHalvingInterval = 210000;
+
+        consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = GENESIS_HASH;
