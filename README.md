@@ -1,25 +1,26 @@
-Bitcoin Core integration/staging tree
+oBTC Core integration/staging tree
 =====================================
 
-https://bitcoincore.org
+https://powx.org
 
-What is Bitcoin?
-----------------
+What is Optical Bitcoin (oBTC)?
+-------------------------------
 
-Bitcoin is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Bitcoin uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Bitcoin Core is the name of open source
-software which enables the use of this currency.
+oBTC is a fork of Bitcoin aiming to reduce mining energy consumption.  Like
+Bitcoin, oBTC is an experimental digital currency that enables instant payments
+to anyone, anywhere in the world. oBTC uses peer-to-peer technology to
+operate with no central authority: managing transactions and issuing money are
+carried out collectively by the network. oBTC Core is the name of open
+source software which enables the use of this currency.
 
 For more information, as well as an immediately usable, binary version of
-the Bitcoin Core software, see https://bitcoincore.org/en/download/, or read the
-[original whitepaper](https://bitcoincore.org/bitcoin.pdf).
+the Bitcoin Core software, see https://powx.org/, or read the
+[oBTC Litepaper](https://arxiv.org/abs/1911.05193).
 
 License
 -------
 
-Bitcoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+oBTC Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
 Development Process
@@ -27,7 +28,7 @@ Development Process
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
 completely stable. [Tags](https://github.com/bitcoin/bitcoin/tags) are created
-regularly to indicate new official, stable release versions of Bitcoin Core.
+regularly to indicate new official, stable release versions of oBTC Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
 and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
@@ -60,16 +61,28 @@ code. This is especially important for large or high-risk changes. It is useful
 to add a test plan to the pull request description if testing the changes is
 not straightforward.
 
-Translations
+
+Contributors
 ------------
 
-Changes to translations as well as new translations can be submitted to
-[Bitcoin Core's Transifex page](https://www.transifex.com/bitcoin/bitcoin/).
+The project would be impossible without the Bitcoin Core. We thank the Bitcoin
+Core contributors for their effort.
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+Below is the list of people who brought the oBTC project to life.
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+* Mike Dubrovsky
+* Roman Zhytar
+* Anton Kovalov
+* Egor Shymko
+* Nikita Koypish
+* Mustafa Hammood
+* Jaspreet Joha
+* Stephen Lin
+* Sunil Kochikar Pai
+* Marshall Ball
+* Lucianna Kiffer
+* Guy Corem
+* Diedrik Vermeulen
+* Bogdan Penkovsky
 
-Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/bitcoin-translators).
+We also thank everyone who believed in us but is not on the list.
