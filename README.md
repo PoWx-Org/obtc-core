@@ -6,7 +6,7 @@ https://powx.org
 What is Optical Bitcoin (oBTC)?
 -------------------------------
 
-oBTC is a fork of Bitcoin aiming to reduce mining energy consumption.  Like
+oBTC is a fork of Bitcoin aiming to reduce mining energy consumption via compatability with cutting edge optical compute cores.  Like
 Bitcoin, oBTC is an experimental digital currency that enables instant payments
 to anyone, anywhere in the world. oBTC uses peer-to-peer technology to
 operate with no central authority: managing transactions and issuing money are
@@ -15,7 +15,7 @@ source software which enables the use of this currency.
 
 For more information, as well as an immediately usable, binary version of
 the Bitcoin Core software, see https://powx.org/, or read the
-[oBTC Litepaper](https://arxiv.org/abs/1911.05193).
+[Towards Optical Proof of Work Manuscript](https://assets.pubpub.org/xi9h9rps/01581688887859.pdf).
 
 License
 -------
@@ -70,19 +70,19 @@ Core contributors for their effort.
 
 Below is the list of people who brought the oBTC project to life.
 
-* Mike Dubrovsky
-* Roman Zhytar
-* Anton Kovalov
-* Egor Shymko
-* Nikita Koypish
-* Mustafa Hammood
-* Jaspreet Joha
-* Stephen Lin
-* Sunil Kochikar Pai
-* Marshall Ball
-* Lucianna Kiffer
-* Guy Corem
-* Diedrik Vermeulen
-* Bogdan Penkovsky
+* Mike Dubrovsky [Co-Founder]
+* Roman Zhytar [SW Developer]
+* Anton Kovalov [SW Developer]
+* Egor Shymko [SW Developer]
+* Nikita Koypish [SW Developer]
+* Mustafa Hammood [HW Prototype Developer; System]
+* Jaspreet Joha [HW Prototype Developer; Simulations]
+* Stephen Lin [HW Prototype Developer; Simulations]
+* Sunil Kochikar Pai [HW Prototype Developer; Matrix Mult Core]
+* Marshall Ball [Cryptography; HeavyHash]
+* Lucianna Kiffer [Cryptoeceonomics]
+* Guy Corem [Sage Advice]
+* Diedrik Vermeulen [Silicon Photonics Advisor; System Architecture and Link Budgets]
+* Bogdan Penkovsky [Co-Founder]
 
 We also thank everyone who believed in us but is not on the list.
