@@ -80,8 +80,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000100010001");
-
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000011");
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256();
 
