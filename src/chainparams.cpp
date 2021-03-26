@@ -58,7 +58,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = CBaseChainParams::MAIN;
-        const uint256 GENESIS_HASH = uint256S("00000024d241cd0d2f91343a58fc32d80d46b0896e45fd0e869b31d47622c70f");
+        const uint256 GENESIS_HASH = uint256S("0000000000115c7a7e3ff65d77ee96de527953ca6e43e77246929741408f95c0");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
@@ -68,7 +68,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 1; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256S("000000ffff000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("0000000000ffff00000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -98,7 +98,7 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 4;
 
-        genesis = CreateGenesisBlock(1613496041, 18973678, 0x1e00ffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1616765395, 1120945927, 0x1c00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
