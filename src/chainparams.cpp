@@ -136,7 +136,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
-        const uint256 GENESIS_HASH = uint256S("6dae6b9e2c3cd68226ab549594a34c0a20432d9589a06fa4ee7d73c30ef3af3c");
+        const uint256 GENESIS_HASH = uint256S("000aab90504d97d9714bd9b20de40aa306519884c7204b2febd3341c47d591e6");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
@@ -173,7 +173,7 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 4;
 
-        genesis = CreateGenesisBlock(1597224622, 8426, 0x1f0fffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1617997093, 2934, 0x1f0fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
