@@ -201,11 +201,22 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 4;
 
+        
+        /*
         genesis = CreateGenesisBlock(1617997093, 2934, 0x1f0fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
         assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
+        */
+
+        genesis = CreateGenesisBlock(1616765395, 1120945927, 0x1c00ffff, 1, 50 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+
+        assert(consensus.hashGenesisBlock == GENESIS_HASH);
+        assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
+
+
 
         vFixedSeeds = std::vector<SeedSpec6> {pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test)};
         vSeeds = {};
