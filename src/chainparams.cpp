@@ -136,6 +136,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
+        /*
         const uint256 GENESIS_HASH = uint256S("000aab90504d97d9714bd9b20de40aa306519884c7204b2febd3341c47d591e6");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
@@ -163,6 +164,33 @@ public:
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256(); // 1692000
+        */
+
+        const uint256 GENESIS_HASH = uint256S("0000000000115c7a7e3ff65d77ee96de527953ca6e43e77246929741408f95c0");
+        consensus.nSubsidyHalvingInterval = 420000;
+        consensus.BIP16Exception = GENESIS_HASH;
+        consensus.BIP34Height = 1;
+        consensus.BIP34Hash = GENESIS_HASH;
+        consensus.BIP65Height = 1;
+        consensus.BIP66Height = 1;
+        consensus.CSVHeight = 1;
+        consensus.SegwitHeight = 1;
+        consensus.MinBIP9WarningHeight = 1; // segwit activation height + miner confirmation window
+        consensus.powLimit = uint256S("0000000000ffff00000000000000000000000000000000000000000000000000");
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
+        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowNoRetargeting = false;
+        consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
+        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000011");
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256();
 
         pchMessageStart[0] = 0xab;
         pchMessageStart[1] = 0xba;
