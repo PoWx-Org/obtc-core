@@ -75,6 +75,7 @@ Below is the list of people who brought the oBTC project to life.
 * Anton Kovalov [SW Developer]
 * Egor Shymko [SW Developer]
 * Nikita Koypish [SW Developer]
+* Vsevolod Hulchuk [SW Developer]
 * Mustafa Hammood [HW Prototype Developer; System]
 * Jaspreet Joha [HW Prototype Developer; Simulations]
 * Stephen Lin [HW Prototype Developer; Simulations]
