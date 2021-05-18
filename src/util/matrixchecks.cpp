@@ -7,7 +7,7 @@
 bool heavyhash::checks::Is4BitPrecision(const uint64_t matrix[64*64]){
     for (int i = 0; i < 64; ++i) {
         for (int j = 0; j < 64; ++j) {
-            if (matrix[ i*64 + j ] < 0 || matrix[ i*64 + j] > 0xF)
+            if (matrix[ i*64 + j] > 0xF)
                 return false;
         }
     }
