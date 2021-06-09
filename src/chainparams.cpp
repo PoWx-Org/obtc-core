@@ -166,7 +166,7 @@ public:
         consensus.defaultAssumeValid = uint256(); // 1692000
         */
 
-        const uint256 GENESIS_HASH = uint256S("0000000000115c7a7e3ff65d77ee96de527953ca6e43e77246929741408f95c0");
+        const uint256 GENESIS_HASH = uint256S("00000000248ecbf08dbd9470a22a4bd3497e25abd132676b55c4ed33f1613256");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
@@ -176,7 +176,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 1; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256S("0000000000ffff00000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("000000003fff0000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -188,7 +188,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000011");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000040010003f");
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256();
 
@@ -210,9 +210,9 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
         */
 
-        genesis = CreateGenesisBlock(1616765395, 1120945927, 0x1c00ffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1623191781, 2072038171, 0x1d003fff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-
+	    std::cout << consensus.hashGenesisBlock.GetHex() << std::endl;
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
         assert(genesis.hashMerkleRoot == uint256S("c4a47847658174dff39f23e69c2246e7e611752884ceb600694a8619adbbfef5"));
 
