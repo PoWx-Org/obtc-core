@@ -5,9 +5,9 @@
 
 ## Audit Status
 
-Status: Implemented
-Date: 21/11/2021
-Commit: https://github.com/PoWx-Org/obtc-core/commit/afa521627eb1867d52f6f71120ae0fac3ecb5811
+* Status: Implemented
+* Date: 21/11/2021
+* Commit: https://github.com/PoWx-Org/obtc-core/commit/afa521627eb1867d52f6f71120ae0fac3ecb5811
 
 ## Scope
 
