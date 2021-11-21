@@ -3,6 +3,12 @@
 * Code Location: https://github.com/PoWx-Org/obtc-core
 * Last Commit: 29132bc679a334dc2e8b4093acbf26a0823fafba
 
+## Audit Status
+
+Status: Implemented
+Date: 21/11/2021
+Commit: https://github.com/PoWx-Org/obtc-core/commit/afa521627eb1867d52f6f71120ae0fac3ecb5811
+
 ## Scope
 
 The scope of the audit is limited to the integration of new optical PoW algorithms & dependencies within the existing bitcoin codebase. It does not include the bitcoin codebase itself, nor does it verify the security and correctness of the oPoW algorithm itself. Instead, the focus was on making sure the safety & security of the consensus and P2P logic remain unaffected. 
