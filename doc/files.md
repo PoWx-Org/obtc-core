@@ -1,4 +1,4 @@
-# Bitcoin Core file system
+# Obtc Core file system
 
 **Contents**
 
@@ -16,15 +16,15 @@
 
 ## Data directory location
 
-The data directory is the default location where the Bitcoin Core files are stored.
+The data directory is the default location where the Obtc Core files are stored.
 
 1. The default data directory paths for supported platforms are:
 
 Platform | Data directory path
 ---------|--------------------
-Linux    | `$HOME/.bitcoin/`
-macOS    | `$HOME/Library/Application Support/Bitcoin/`
-Windows  | `%APPDATA%\Bitcoin\` <sup>[\[1\]](#note1)</sup>
+Linux    | `$HOME/.obtc/`
+macOS    | `$HOME/Library/Application Support/Obtc/`
+Windows  | `%APPDATA%\Obtc\` <sup>[\[1\]](#note1)</sup>
 
 2. The non-default data directory path can be specified by `-datadir` option.
 
