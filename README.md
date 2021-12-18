@@ -11,7 +11,6 @@ Any possible algorithm adjustment will be publicly discussed well in advance.
 Anyone trying to sell you a photonic miner is trying to scam you.**
 
 -PoWx team
-**
 
 https://powx.org
 
