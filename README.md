@@ -80,6 +80,6 @@ Contributors
 The project would be impossible without the Bitcoin Core. We thank the Bitcoin
 Core contributors for their effort.
 
-The list of [PoWx contributors](https://github.com/PoWx-Org).
+The list of [PoWx contributors](https://github.com/PoWx-Org) who brought the oBTC project to life.
 
 We also thank everyone who believed in us but is not on the list.
