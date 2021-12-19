@@ -80,22 +80,6 @@ Contributors
 The project would be impossible without the Bitcoin Core. We thank the Bitcoin
 Core contributors for their effort.
 
-Below is the list of people who brought the oBTC project to life.
-
-* Mike Dubrovsky [Co-Founder]
-* Roman Zhytar [SW Developer]
-* Anton Kovalov [SW Developer]
-* Egor Shymko [SW Developer]
-* Nikita Koypish [SW Developer]
-* Vsevolod Hulchuk [SW Developer]
-* Mustafa Hammood [HW Prototype Developer; System]
-* Jaspreet Joha [HW Prototype Developer; Simulations]
-* Stephen Lin [HW Prototype Developer; Simulations]
-* Sunil Kochikar Pai [HW Prototype Developer; Matrix Mult Core]
-* Marshall Ball [Cryptography; HeavyHash]
-* Lucianna Kiffer [Cryptoeceonomics]
-* Guy Corem [Sage Advice]
-* Diedrik Vermeulen [Silicon Photonics Advisor; System Architecture and Link Budgets]
-* Bogdan Penkovsky [Co-Founder]
+The list of [PoWx contributors](https://github.com/PoWx-Org).
 
 We also thank everyone who believed in us but is not on the list.
