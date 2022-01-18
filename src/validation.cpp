@@ -4551,6 +4551,7 @@ void UnloadBlockIndex()
     g_blockman.Unload();
     pindexBestInvalid = nullptr;
     pindexBestHeader = nullptr;
+    ResetASERTAnchorBlockCache();
     mempool.clear();
     vinfoBlockFile.clear();
     nLastBlockFile = 0;
