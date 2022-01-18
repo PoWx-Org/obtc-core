@@ -79,6 +79,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
+        // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
+        // difficulty is cut in half. Doubled if blocks are ahead of schedule.
+        // Two days
+        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
+
+        // Feb 14, 2022 20:59:59 GMT protocol upgrade
+        consensus.asertActivationTime = 1644872399;
+
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000011");
         // By default assume that the signatures in ancestors of this block are valid.
@@ -136,7 +144,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
-        const uint256 GENESIS_HASH = uint256S("000aab90504d97d9714bd9b20de40aa306519884c7204b2febd3341c47d591e6");
+        const uint256 GENESIS_HASH = uint256S("00000000248ecbf08dbd9470a22a4bd3497e25abd132676b55c4ed33f1613256");
         consensus.nSubsidyHalvingInterval = 420000;
         consensus.BIP16Exception = GENESIS_HASH;
         consensus.BIP34Height = 1;
@@ -147,19 +155,34 @@ public:
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 1;
         // using less pow amount for testnet to speed up mining
-        consensus.powLimit = uint256S("000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("000000003fff0000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
+        // The half life for the testnet ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
+        // difficulty is cut in half. Doubled if blocks are ahead of schedule.
+        // One hour
+        consensus.nASERTHalfLife = 60 * 60;
+
+        // Feb 05, 2022 00:30:15 GMT testnet protocol upgrade
+        consensus.asertActivationTime = 1644021015;
+
+        consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
+          28,       // anchor block height
+          0x1d003fff,   // anchor block nBits
+          1644023533,   // anchor block previous block timestamp
+        };
+
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000000000101");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000400100040");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256(); // 1692000
@@ -173,7 +196,7 @@ public:
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 4;
 
-        genesis = CreateGenesisBlock(1617997093, 2934, 0x1f0fffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1623191781, 2072038171, 0x1d003fff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         assert(consensus.hashGenesisBlock == GENESIS_HASH);
@@ -222,12 +245,22 @@ public:
         consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
+        // The half life for the ASERT DAA. For every (nASERTHalfLife) seconds behind schedule the blockchain gets,
+        // difficulty is cut in half. Doubled if blocks are ahead of schedule.
+        // Two days. Note regtest has no DAA checks, so this unused parameter is here merely for completeness.
+        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
+
+        // Feb 14, 2022 20:59:59 GMT protocol upgrade
+        consensus.asertActivationTime = 1644872399;
+
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
+
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
