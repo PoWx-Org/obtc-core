@@ -7,6 +7,7 @@
 
 #include <arith_uint256.h>
 #include <chain.h>
+#include <consensus/activation.h>
 #include <primitives/block.h>
 #include <uint256.h>
 
@@ -231,7 +232,24 @@ arith_uint256 CalculateASERT(const arith_uint256 &refTarget,
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
+    // GetNextWorkRequired should never be called on the genesis block
     assert(pindexLast != nullptr);
+
+    // Special rule for regtest: never retarget.
+    if (params.fPowNoRetargeting) {
+        return pindexPrev->nBits;
+    }
+
+    if (IsAsertEnabled(params, pindexPrev)) {
+        const CBlockIndex *panchorBlock = nullptr;
+        if (!params.asertAnchorParams) {
+            // No hard-coded anchor params -- find the anchor block dynamically
+            panchorBlock = GetASERTAnchorBlock(pindexPrev, params);
+        }
+
+        return GetNextASERTWorkRequired(pindexPrev, pblock, params, panchorBlock);
+    }
+
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
     // Only change once per difficulty adjustment interval

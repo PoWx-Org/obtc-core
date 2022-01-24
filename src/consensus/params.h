@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2022 PoWx Team
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +8,7 @@
 #define BITCOIN_CONSENSUS_PARAMS_H
 
 #include <uint256.h>
+#include <optional.h>
 #include <limits>
 
 namespace Consensus {
@@ -71,6 +73,10 @@ struct Params {
     uint32_t nRuleChangeActivationThreshold;
     uint32_t nMinerConfirmationWindow;
     BIP9Deployment vDeployments[MAX_VERSION_BITS_DEPLOYMENTS];
+
+    /** Unix time (14 Feb 2022 20:59:59 GMT) */
+    int asertActivationTime;
+
     /** Proof of work parameters */
     uint256 powLimit;
     bool fPowAllowMinDifficultyBlocks;
@@ -81,6 +87,16 @@ struct Params {
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
+    /** Used by the ASERT DAA activated after Feb. 14, 2022 */
+    struct ASERTAnchor {
+        int nHeight;
+        uint32_t nBits;
+        int64_t nPrevBlockTime;
+    };
+
+    /** For chains with a checkpoint after the ASERT anchor block, this is always defined */
+    std::optional<ASERTAnchor> asertAnchorParams;
 };
 } // namespace Consensus
 

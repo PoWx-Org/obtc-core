@@ -84,6 +84,9 @@ public:
         // Two days
         consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
 
+        // Feb 14, 2022 20:59:59 GMT protocol upgrade
+        consensus.asertActivationTime = 1644872399;
+
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000011");
         // By default assume that the signatures in ancestors of this block are valid.
@@ -167,6 +170,9 @@ public:
         // One hour
         consensus.nASERTHalfLife = 60 * 60;
 
+        // Feb 14, 2022 20:59:59 GMT protocol upgrade
+        consensus.asertActivationTime = 1644872399;
+
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000000000000101");
 
@@ -236,6 +242,9 @@ public:
         // difficulty is cut in half. Doubled if blocks are ahead of schedule.
         // Two days. Note regtest has no DAA checks, so this unused parameter is here merely for completeness.
         consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
+
+        // Feb 14, 2022 20:59:59 GMT protocol upgrade
+        consensus.asertActivationTime = 1644872399;
 
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
