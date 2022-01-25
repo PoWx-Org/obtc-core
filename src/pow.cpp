@@ -21,7 +21,7 @@ void ResetASERTAnchorBlockCache() noexcept {
 
 /**
  * Returns a pointer to the anchor block used for ASERT.
- * As anchor we use the first block for which IsAxionEnabled() returns true.
+ * As anchor we use the first block for which IsAsertEnabled() returns true.
  * This block happens to be the last block which was mined under the old DAA
  * rules.
  *
@@ -29,9 +29,9 @@ void ResetASERTAnchorBlockCache() noexcept {
  * the anchor block is deeply buried, and behind a hard-coded checkpoint.
  *
  * Preconditions: - pindex must not be nullptr
- *                - pindex must satisfy: IsAxionEnabled(params, pindex) == true
+ *                - pindex must satisfy: IsAsertEnabled(params, pindex) == true
  * Postcondition: Returns a pointer to the first (lowest) block for which
- *                IsAxionEnabled is true, and for which IsAxionEnabled(pprev)
+ *                IsAsertEnabled is true, and for which IsAsertEnabled(pprev)
  *                is false (or for which pprev is nullptr). The return value may
  *                be pindex itself.
  */
@@ -53,21 +53,21 @@ static const CBlockIndex *GetASERTAnchorBlock(const CBlockIndex *const pindex,
     if (lastCached && pindex->GetAncestor(lastCached->nHeight) == lastCached)
         return lastCached;
 
-    // Slow path: walk back until we find the first ancestor for which IsAxionEnabled() == true.
+    // Slow path: walk back until we find the first ancestor for which IsAsertEnabled() == true.
     const CBlockIndex *anchor = pindex;
 
     while (anchor->pprev) {
-        // first, skip backwards testing IsAxionEnabled
+        // first, skip backwards testing IsAsertEnabled
         // The below code leverages CBlockIndex::pskip to walk back efficiently.
-        if (IsAxionEnabled(params, anchor->pskip)) {
+        if (IsAsertEnabled(params, anchor->pskip)) {
             // skip backward
             anchor = anchor->pskip;
             continue; // continue skipping
         }
         // cannot skip here, walk back by 1
-        if (!IsAxionEnabled(params, anchor->pprev)) {
+        if (!IsAsertEnabled(params, anchor->pprev)) {
             // found it -- highest block where Axion is not enabled is anchor->pprev, and
-            // anchor points to the first block for which IsAxionEnabled() == true
+            // anchor points to the first block for which IsAsertEnabled() == true
             break;
         }
         anchor = anchor->pprev;
@@ -242,10 +242,10 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     if (IsAsertEnabled(params, pindexPrev)) {
         const CBlockIndex *panchorBlock = nullptr;
-        if (!params.asertAnchorParams) {
-            // No hard-coded anchor params -- find the anchor block dynamically
-            panchorBlock = GetASERTAnchorBlock(pindexPrev, params);
-        }
+        // if (!params.asertAnchorParams) {
+        //     // No hard-coded anchor params -- find the anchor block dynamically
+        //     panchorBlock = GetASERTAnchorBlock(pindexPrev, params);
+        // }
 
         return GetNextASERTWorkRequired(pindexPrev, pblock, params, panchorBlock);
     }

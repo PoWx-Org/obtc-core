@@ -15,10 +15,10 @@ bool IsAsertEnabled(const Consensus::Params &params,
         return false;
     }
 
-    if (params.asertAnchorParams) {
-        // This chain has a checkpointed anchor block, do simple height check
-        return pindexPrev->nHeight >= params.asertAnchorParams->nHeight;
-    }
+    // if (params.asertAnchorParams) {
+    //     // This chain has a checkpointed anchor block, do simple height check
+    //     return pindexPrev->nHeight >= params.asertAnchorParams->nHeight;
+    // }
 
     // Otherwise, do the MTP check
     return pindexPrev->GetMedianTimePast() >=
