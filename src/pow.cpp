@@ -237,17 +237,17 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     // Special rule for regtest: never retarget.
     if (params.fPowNoRetargeting) {
-        return pindexPrev->nBits;
+        return pindexLast->nBits;
     }
 
-    if (IsAsertEnabled(params, pindexPrev)) {
+    if (IsAsertEnabled(params, pindexLast)) {
         const CBlockIndex *panchorBlock = nullptr;
         // if (!params.asertAnchorParams) {
         //     // No hard-coded anchor params -- find the anchor block dynamically
-        //     panchorBlock = GetASERTAnchorBlock(pindexPrev, params);
+        //     panchorBlock = GetASERTAnchorBlock(pindexLast, params);
         // }
 
-        return GetNextASERTWorkRequired(pindexPrev, pblock, params, panchorBlock);
+        return GetNextASERTWorkRequired(pindexLast, pblock, params, panchorBlock);
     }
 
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
