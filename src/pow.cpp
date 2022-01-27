@@ -242,14 +242,15 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     if (IsAsertEnabled(params, pindexLast)) {
         const CBlockIndex *panchorBlock = nullptr;
-        // if (!params.asertAnchorParams) {
-        //     // No hard-coded anchor params -- find the anchor block dynamically
-        //     panchorBlock = GetASERTAnchorBlock(pindexLast, params);
-        // }
+        if (!params.asertAnchorParams) {
+            // No hard-coded anchor params -- find the anchor block dynamically
+            panchorBlock = GetASERTAnchorBlock(pindexLast, params);
+        }
 
         return GetNextASERTWorkRequired(pindexLast, pblock, params, panchorBlock);
     }
 
+    // Legacy DAA algorithm
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
     // Only change once per difficulty adjustment interval

@@ -96,7 +96,7 @@ struct Params {
     };
 
     /** For chains with a checkpoint after the ASERT anchor block, this is always defined */
-    // std::optional<ASERTAnchor> asertAnchorParams;
+    Optional<ASERTAnchor> asertAnchorParams;
 };
 } // namespace Consensus
 
