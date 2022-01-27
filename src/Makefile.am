@@ -432,6 +432,8 @@ libbitcoin_consensus_a_SOURCES = \
   consensus/params.h \
   consensus/tx_check.cpp \
   consensus/validation.h \
+	consensus/activation.cpp \
+	consensus/activation.h \
   hash.cpp \
   hash.h \
   prevector.h \
