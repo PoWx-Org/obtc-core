@@ -243,8 +243,8 @@ BOOST_AUTO_TEST_CASE(calculate_asert_test) {
   };
 
   // Define some named input argument values
-  const arith_uint256 SINGLE_300_TARGET { "00000000ffb1ffffffffffffffffffffffffffffffffffffffffffffffffffff" };
-  const arith_uint256 FUNNY_REF_TARGET { "000000008000000000000000000fffffffffffffffffffffffffffffffffffff" };
+  const arith_uint256 SINGLE_300_TARGET { "0000000000ffb1004e0000000000000000000000000000000000000000000000" };
+  const arith_uint256 FUNNY_REF_TARGET { "000000000080000000000000000fffffffffffffffffffffffffffffffffffff" };
 
   // Define our expected input and output values.
   // The timeDiff entries exclude the `parent_time_diff` - this is
@@ -259,18 +259,18 @@ BOOST_AUTO_TEST_CASE(calculate_asert_test) {
       { powLimit >> 2, 600, 0, 2*144, powLimit >> 3, 0x1b1fffe0 },
       { powLimit >> 3, 600, 0, 2*144, powLimit >> 4, 0x1b0ffff0 },
       { powLimit, 600, 0, 2*(256-42)*144, 3, 0x01030000 },
-      // { powLimit, 600, 0, 2*(256-34)*144 + 119, 3, 0x01030000 },
-      // { powLimit, 600, 0, 2*(256-34)*144 + 120, 2, 0x01020000 },
-      // { powLimit, 600, 0, 2*(256-33)*144-1, 2, 0x01020000 },
-      // { powLimit, 600, 0, 2*(256-33)*144, 1, 0x01010000 },  // 1 bit less since we do not need to shift to 0
-      // { powLimit, 600, 0, 2*(256-32)*144, 1, 0x01010000 },  // more will not decrease below 1
-      // { 1, 600, 0, 2*(256-32)*144, 1, 0x01010000 },
-      // { powLimit, 600, 2*(512-32)*144, 0, powLimit, powLimit_nBits },
-      // { 1, 600, (512-64)*144*600, 0, powLimit, powLimit_nBits },
-      // { powLimit, 600, 300, 1, SINGLE_300_TARGET, 0x1d00ffb1 },  // clamps to powLimit
-      // { FUNNY_REF_TARGET, 600, 600*2*33*144, 0, powLimit, powLimit_nBits }, // confuses any attempt to detect overflow by inspecting result
-      // { 1, 600, 600*2*256*144, 0, powLimit, powLimit_nBits }, // overflow to exactly 2^256
-      // { 1, 600, 600*2*224*144 - 1, 0, arith_uint256(0xffff8) << 204, powLimit_nBits }, // just under powlimit (not clamped) yet over powlimit_nbits
+      { powLimit, 600, 0, 2*(256-32)*144 + 119, 1, 0x01010000 },
+      { powLimit, 600, 0, 2*(256-40)*144 + 120, 1, 0x01010000 },
+      { powLimit, 600, 0, 2*(256-39)*144-1, 1, 0x01010000 },
+      { powLimit, 600, 0, 2*(256-33)*144, 1, 0x01010000 },  // 1 bit less since we do not need to shift to 0
+      { powLimit, 600, 0, 2*(256-32)*144, 1, 0x01010000 },  // more will not decrease below 1
+      { 1, 600, 0, 2*(256-32)*144, 1, 0x01010000 },
+      { powLimit, 600, 2*(512-32)*144, 0, powLimit, powLimit_nBits },
+      { 1, 600, (512-64)*144*600, 0, powLimit, powLimit_nBits },
+      { powLimit, 600, 300, 1, SINGLE_300_TARGET, 0x1c00ffb1 },  // clamps to powLimit
+      { FUNNY_REF_TARGET, 600, 600*2*33*144, 0, powLimit, powLimit_nBits }, // confuses any attempt to detect overflow by inspecting result
+      { 1, 600, 600*2*256*144, 0, powLimit, powLimit_nBits }, // overflow to exactly 2^256
+      { 1, 600, 600*2*224*144 - 1, 0, arith_uint256(0xffff) << 200, powLimit_nBits }, // just under powlimit (not clamped) yet over powlimit_nbits
   };
 
   for (auto& v : calculate_args) {
