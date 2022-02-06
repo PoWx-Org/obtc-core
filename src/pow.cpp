@@ -82,6 +82,37 @@ static const CBlockIndex *GetASERTAnchorBlock(const CBlockIndex *const pindex,
 }
 
 
+uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
+                                  const CBlockHeader *pblock,
+                                  const Consensus::Params &params,
+                                  const CBlockIndex *pindexAnchorBlock) noexcept {
+    // If hard-coded params exist for this chain, we use those
+    if (params.asertAnchorParams) {
+        return GetNextASERTWorkRequired(pindexPrev, pblock, params, *params.asertAnchorParams);
+    }
+
+    // Otherwise, caller should have specified the anchor block
+    //
+    // Anchor block is the block on which all ASERT scheduling calculations are based.
+    // It too must exist, and it must have a valid parent.
+    assert(pindexAnchorBlock != nullptr);
+
+    // Note: time difference is to parent of anchor block (or to anchor block itself iff anchor is genesis).
+    //       (according to absolute formulation of ASERT)
+    const int64_t anchorTime = pindexAnchorBlock->pprev
+                                ? pindexAnchorBlock->pprev->GetBlockTime()
+                                : pindexAnchorBlock->GetBlockTime();
+
+    const Consensus::Params::ASERTAnchor anchorParams{
+        pindexAnchorBlock->nHeight,
+        pindexAnchorBlock->nBits,
+        anchorTime
+    };
+
+    // Call the overloaded function that does the actual calculation using anchorParams
+    return GetNextASERTWorkRequired(pindexPrev, pblock, params, anchorParams);
+}
+
 /**
  * Compute the next required proof of work using an absolutely scheduled
  * exponentially weighted target (ASERT).
@@ -94,16 +125,12 @@ static const CBlockIndex *GetASERTAnchorBlock(const CBlockIndex *const pindex,
 uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
                                   const CBlockHeader *pblock,
                                   const Consensus::Params &params,
-                                  const CBlockIndex *pindexAnchorBlock) noexcept {
+                                  const Consensus::Params::ASERTAnchor &anchorParams) noexcept {
     // This cannot handle the genesis block and early blocks in general.
     assert(pindexPrev != nullptr);
 
-    // Anchor block is the block on which all ASERT scheduling calculations are based.
-    // It too must exist, and it must have a valid parent.
-    assert(pindexAnchorBlock != nullptr);
-
     // We make no further assumptions other than the height of the prev block must be >= that of the anchor block.
-    assert(pindexPrev->nHeight >= pindexAnchorBlock->nHeight);
+    assert(pindexPrev->nHeight >= anchorParams.nHeight);
 
     const arith_uint256 powLimit = UintToArith256(params.powLimit);
 
@@ -113,7 +140,7 @@ uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
     if (params.fPowAllowMinDifficultyBlocks &&
         (pblock->GetBlockTime() >
          pindexPrev->GetBlockTime() + 2 * params.nPowTargetSpacing)) {
-        return UintToArith256(params.powLimit).GetCompact();
+        return powLimit.GetCompact();
     }
 
     // For nTimeDiff calculation, the timestamp of the parent to the anchor block is used,
@@ -121,15 +148,13 @@ uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
     // This is somewhat counterintuitive since it is referred to as the anchor timestamp, but
     // as per the formula the timestamp of block M-1 must be used if the anchor is M.
     assert(pindexPrev->pprev != nullptr);
-    // Note: time difference is to parent of anchor block (or to anchor block itself iff anchor is genesis).
-    //       (according to absolute formulation of ASERT)
-    const auto anchorTime = pindexAnchorBlock->pprev
-                                    ? pindexAnchorBlock->pprev->GetBlockTime()
-                                    : pindexAnchorBlock->GetBlockTime();
-    const int64_t nTimeDiff = pindexPrev->GetBlockTime() - anchorTime;
+
+    // Time difference is from current block to anchor's parent
+    const int64_t nTimeDiff = pindexPrev->GetBlockTime() - anchorParams.nPrevBlockTime;
     // Height difference is from current block to anchor block
-    const int64_t nHeightDiff = pindexPrev->nHeight - pindexAnchorBlock->nHeight;
-    const arith_uint256 refBlockTarget = arith_uint256().SetCompact(pindexAnchorBlock->nBits);
+    const int64_t nHeightDiff = pindexPrev->nHeight - anchorParams.nHeight;
+    const arith_uint256 refBlockTarget = arith_uint256().SetCompact(anchorParams.nBits);
+
     // Do the actual target adaptation calculation in separate
     // CalculateASERT() function
     arith_uint256 nextTarget = CalculateASERT(refBlockTarget,

@@ -34,6 +34,11 @@ uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
                                   const Consensus::Params &params,
                                   const CBlockIndex *pindexAnchorBlock)
                                   noexcept;
+uint32_t GetNextASERTWorkRequired(const CBlockIndex *pindexPrev,
+                                  const CBlockHeader *pblock,
+                                  const Consensus::Params &params,
+                                  const Consensus::Params::ASERTAnchor &anchorParams)
+                                  noexcept;
 
 /**
  * ASERT caches a special block index for efficiency. If block indices are
