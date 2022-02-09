@@ -253,7 +253,8 @@ BITCOIN_CORE_H = \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
   zmq/zmqpublishnotifier.h \
-  zmq/zmqrpc.h
+  zmq/zmqrpc.h \
+  consensus/activation.h
 
 
 obj/build.h: FORCE
@@ -316,6 +317,7 @@ libbitcoin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
+  consensus/activation.cpp \
   $(BITCOIN_CORE_H)
 
 if ENABLE_WALLET
@@ -432,8 +434,6 @@ libbitcoin_consensus_a_SOURCES = \
   consensus/params.h \
   consensus/tx_check.cpp \
   consensus/validation.h \
-	consensus/activation.cpp \
-	consensus/activation.h \
   hash.cpp \
   hash.h \
   prevector.h \
