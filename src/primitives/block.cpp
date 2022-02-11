@@ -14,11 +14,15 @@ uint256 CBlockHeader::GetHash() const
 
 uint256 CBlockHeader::GetPoWHash() const
 {
+    if (!powHash.IsNull()) return powHash;
+
     uint256 seed;
     CSHA3_256().Write(hashPrevBlock.begin(), 32).Finalize(seed.begin());
     uint64_t matrix[64*64];
     GenerateHeavyHashMatrix(seed, matrix);
-    return SerializeHeavyHash(*this, matrix);
+    const uint256 cache = SerializeHeavyHash(*this, matrix);
+    SetCache(cache);
+    return cache;
 }
 
 std::string CBlock::ToString() const
