@@ -1716,14 +1716,17 @@ bool static ProcessHeadersMessage(CNode* pfrom, CConnman* connman, CTxMemPool& m
             return true;
         }
 
+        //! dont hash each one, just store last block then hash it
         uint256 hashLastBlock;
+        CBlockHeader lastHeader;
         for (const CBlockHeader& header : headers) {
             if (!hashLastBlock.IsNull() && header.hashPrevBlock != hashLastBlock) {
                 Misbehaving(pfrom->GetId(), 20, "non-continuous headers sequence");
                 return false;
             }
-            hashLastBlock = header.GetHash();
+            lastHeader = header;
         }
+        hashLastBlock = lastHeader.GetHash();
 
         // If we don't have the last header, then they'll have given us
         // something new (if these headers are valid).
