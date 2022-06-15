@@ -47,7 +47,7 @@ namespace singular {
         static inline bool isFullRank(const DiagonalMatrix< M, N >& singularValues, const int size) {
             const double round_off = 1.000009e-12;
             for (int i = 0; i < size; ++i) {
-                if (abs( singularValues(i, i) ) < round_off)
+                if (std::abs( singularValues(i, i) ) < round_off)
                     return false;
             }
             return true;
