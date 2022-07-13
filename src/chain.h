@@ -9,6 +9,7 @@
 #include <arith_uint256.h>
 #include <consensus/params.h>
 #include <flatfile.h>
+#include <powcache.h>
 #include <primitives/block.h>
 #include <tinyformat.h>
 #include <uint256.h>
@@ -360,7 +361,7 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
-        return block.GetHash();
+        return powHashProxy.GetHash(block);
     }
 
 
