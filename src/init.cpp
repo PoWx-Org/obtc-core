@@ -34,6 +34,7 @@
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/settings.h>
+#include <powcache.h>
 #include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>
@@ -278,6 +279,7 @@ void Shutdown(NodeContext& node)
             g_chainstate->ResetCoinsViews();
         }
         pblocktree.reset();
+        powHashProxy.Stop();
     }
     for (const auto& client : node.chain_clients) {
         client->stop();
@@ -1508,6 +1510,8 @@ bool AppInitMain(NodeContext& node)
     int64_t nCoinDBCache = std::min(nTotalCache / 2, (nTotalCache / 4) + (1 << 23)); // use 25%-50% of the remainder for disk cache
     nCoinDBCache = std::min(nCoinDBCache, nMaxCoinsDBCache << 20); // cap total coins db cache
     nTotalCache -= nCoinDBCache;
+    int64_t nHeavyHashCache = std::min(nTotalCache / 32, nMaxHeavyHashCache << 20);
+    nTotalCache -= nHeavyHashCache;
     nCoinCacheUsage = nTotalCache; // the rest goes to in-memory cache
     int64_t nMempoolSizeMax = gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
     LogPrintf("Cache configuration:\n");
@@ -1520,6 +1524,7 @@ bool AppInitMain(NodeContext& node)
                   filter_index_cache * (1.0 / 1024 / 1024), BlockFilterTypeName(filter_type));
     }
     LogPrintf("* Using %.1f MiB for chain state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
+    LogPrintf("* Using %.1f MiB for heavy hash database\n", nHeavyHashCache * (1.0 / 1024 / 1024));
     LogPrintf("* Using %.1f MiB for in-memory UTXO set (plus up to %.1f MiB of unused mempool space)\n", nCoinCacheUsage * (1.0 / 1024 / 1024), nMempoolSizeMax * (1.0 / 1024 / 1024));
 
     bool fLoaded = false;
@@ -1538,8 +1543,11 @@ bool AppInitMain(NodeContext& node)
                 g_chainstate = MakeUnique<CChainState>();
                 UnloadBlockIndex();
 
+                // Initialize cache for PoW HeavyHash[es]
+                powHashProxy.Init(nHeavyHashCache);
+
                 // new CBlockTreeDB tries to delete the existing file, which
-                // fails if it's still open from the previous loop. Close it first:
+                // fails if it's still open from the previous loop. Close it first:                
                 pblocktree.reset();
                 pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
 
