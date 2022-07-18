@@ -8,14 +8,14 @@ CPowCacheDB::CPowCacheDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, boo
     db(ldb_path, nCacheSize, fMemory, fWipe, true)
 {}
 
-Optional<uint256> CPowCacheDB::GetCacheEntry(const uint256& lookupHash) const {
+Optional<uint256> CPowCacheDB::GetCacheEntry(const uint160& lookupHash) const {
     uint256 blockHash;
     if (db.Read(lookupHash, blockHash)) return blockHash;
 
     return nullopt;
 }
 
-bool CPowCacheDB::WriteCacheEntry(const uint256& lookupHash, const uint256& powHash) {
+bool CPowCacheDB::WriteCacheEntry(const uint160& lookupHash, const uint256& powHash) {
     return db.Write(lookupHash, powHash);
 }
 
@@ -34,7 +34,7 @@ uint256 CPowHashProxy::GetHash(CBlockHeader& block)
 {
     if(pow_cachedb)
     {
-        uint256 cacheHash = block.GetCacheHash();
+        uint160 cacheHash = block.GetCacheHash();
         
         if (Optional<uint256> optionalBlockHash = pow_cachedb->GetCacheEntry(cacheHash))
             return optionalBlockHash.get();

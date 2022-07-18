@@ -14,9 +14,9 @@ uint256 CBlockHeader::GetHash() const
     return GetPoWHash();
 }
 
-uint256 CBlockHeader::GetCacheHash() const
+uint160 CBlockHeader::GetCacheHash() const
 {
-    uint256 hash;
+    uint160 hash;
     CSHA1().Write((const unsigned char*)this, 80).Finalize((unsigned char*)&hash);
     return hash;
 }

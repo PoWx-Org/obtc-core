@@ -28,8 +28,8 @@ public:
     explicit CPowCacheDB(fs::path ldb_path, size_t nCacheSize, bool fMemory, bool fWipe);
     
     // Read method already checks for record existence
-    Optional<uint256> GetCacheEntry(const uint256& lookupHash) const;
-    bool WriteCacheEntry(const uint256& lookupHash, const uint256& powHash);
+    Optional<uint256> GetCacheEntry(const uint160& lookupHash) const;
+    bool WriteCacheEntry(const uint160& lookupHash, const uint256& powHash);
 };
 
 class CPowHashProxy
