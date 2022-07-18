@@ -22,7 +22,7 @@ bool CPowCacheDB::WriteCacheEntry(const uint256& lookupHash, const uint256& powH
 void CPowHashProxy::Init(size_t nCacheSize)
 {
     pow_cachedb.reset();
-    pow_cachedb.reset(new CPowCacheDB(GetDataDir(false) / "powcache", nCacheSize, false, false));
+    pow_cachedb.reset(new CPowCacheDB(GetDataDir() / "powcache", nCacheSize, false, false));
 };
 
 void CPowHashProxy::Stop()
