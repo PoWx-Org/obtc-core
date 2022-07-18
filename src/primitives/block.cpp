@@ -1,8 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2022 barrystyle
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <crypto/sha1.h>
 #include <primitives/block.h>
 #include <hash.h>
 #include <tinyformat.h>
@@ -10,6 +12,13 @@
 uint256 CBlockHeader::GetHash() const
 {
     return GetPoWHash();
+}
+
+uint160 CBlockHeader::GetCacheHash() const
+{
+    uint160 hash;
+    CSHA1().Write((const unsigned char*)this, 80).Finalize((unsigned char*)&hash);
+    return hash;
 }
 
 uint256 CBlockHeader::GetPoWHash() const
